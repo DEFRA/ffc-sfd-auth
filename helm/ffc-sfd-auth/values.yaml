@@ -22,19 +22,6 @@ ingress:
   server: ffc-sfd-auth.{ENVIRONMENT}.adp.defra.gov.uk
   path: /auth
 
-auth:
-  defraIdEnabled: true
-  defraIdWellKnownUrl: 
-  defraIdClientId:
-  defraIdClientSecret:
-  defraIdServiceId:
-  defraIdPolicy:
-  defraIdRedirectPath: /auth/sign-in-oidc
-  defraIdPostLogoutRedirectPath: /auth/sign-out-oidc
-  devAuthPrivateKey:
-  devAuthPublicKey:
-  cookiePassword: the-password-must-be-at-least-32-characters-long
-
 redis:
   host:
   port: 6380
