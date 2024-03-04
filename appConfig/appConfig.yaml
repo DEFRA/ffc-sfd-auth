@@ -4,3 +4,5 @@
   value: "3002"
 - key: APPINSIGHTS_CLOUDROLE
   value: "{{serviceName}}"
+- key: REDIS_PORT
+  value: "6380"

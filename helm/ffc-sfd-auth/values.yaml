@@ -22,13 +22,6 @@ ingress:
   server: ffc-sfd-auth.{ENVIRONMENT}.adp.defra.gov.uk
   path: /auth
 
-containerConfigMap:
-  name: ffc-sfd-auth-config-map
-
-secret:
-  name: ffc-sfd-auth-container-secret
-  type: Opaque
-
 auth:
   defraIdEnabled: true
   defraIdWellKnownUrl: 
