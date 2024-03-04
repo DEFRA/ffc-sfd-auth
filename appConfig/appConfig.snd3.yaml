@@ -4,7 +4,7 @@
 - key: REDIS_HOST
   value: "SNDADPINFRD3401.redis.cache.windows.net"
 - key: REDIS_PASSWORD
-  value: "{{servicename}}-REDIS-PASSWORD"
+  value: "{{servicename}}-REDIS_PASSWORD"
   type: "keyvault"
 - key: GATEWAY_HOST
   value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk"
