@@ -1,0 +1,3 @@
+services:
+  ffc-sfd-auth:
+    command: npm run start:debug

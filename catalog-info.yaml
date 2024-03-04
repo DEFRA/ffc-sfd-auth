@@ -1,0 +1,38 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ffc-sfd-auth
+  
+  description: Authentication integration service for Single Front Door
+  
+  annotations:
+    github.com/project-slug: defra/ffc-sfd-auth
+    dev.azure.com/project: DEFRA-FFC
+    dev.azure.com/build-definition: ffc-sfd-auth
+    sonarqube.org/project-key: ffc-sfd-auth
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/kubernetes-id: ffc-sfd-auth
+  links:
+    - url: https://github.com/defra/ffc-sfd-auth
+      title: GitHub Repository
+      icon: github
+    - url: https://dev.azure.com/defragovuk/DEFRA-FFC/
+      title: Azure DevOps Project
+      icon: project
+    - url: https://sonarcloud.io/project/overview?id=ffc-sfd-auth
+      title: SonarCloud Analysis
+      icon: check
+    - url: https://snyk.io/test/github/DEFRA/ffc-sfd-auth
+      title: Snyk Analysis
+      icon: policy
+    - url: https://portal.azure.com/defradev.onmicrosoft.com
+      title: Azure Portal - Defra Dev
+      icon: cloud
+    - url: https://portal.azure.com/Defra.onmicrosoft.com
+      title: Azure Portal - Defra
+      icon: cloud
+spec:
+  type: backend
+  lifecycle: alpha
+  owner: "group:default/fcp-sfd"
+  

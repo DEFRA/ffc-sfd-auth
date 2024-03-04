@@ -1,0 +1,8 @@
+{{- include "adp-helm-library.deployment" (list . "ffc-sfd-auth.deployment") -}}
+{{- define "ffc-sfd-auth.deployment" -}}
+spec:
+  template:
+    spec:
+      containers:
+      - {{ include "adp-helm-library.container" (list . "ffc-sfd-auth.container") }}
+{{- end -}}
