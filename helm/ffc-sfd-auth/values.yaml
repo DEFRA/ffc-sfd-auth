@@ -8,26 +8,55 @@ image: ffc-sfd-auth
 labels:
   component: backend
 
-# Here you can define your Priority classes, min/max replicables etc. Empty block does the HELM Library defaults.
+# Here you can define your Priority classes, min/max replicas etc. Empty block does the HELM Library defaults.
 deployment: {}
 
 # These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
 container:
   memCpuTier: L
 
-# These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
+ingress:
+  class: nginx
+  endpoint: ffc-sfd
+  server: example.com
+  path: /auth
+
+containerConfigMap:
+  name: ffc-sfd-auth-config-map
+
+secret:
+  name: ffc-sfd-auth-container-secret
+  type: Opaque
+
+auth:
+  defraIdEnabled: true
+  defraIdWellKnownUrl: 
+  defraIdClientId:
+  defraIdClientSecret:
+  defraIdServiceId:
+  defraIdPolicy:
+  defraIdRedirectPath: /auth/sign-in-oidc
+  defraIdPostLogoutRedirectPath: /auth/sign-out-oidc
+  devAuthPrivateKey:
+  devAuthPublicKey:
+  cookiePassword: the-password-must-be-at-least-32-characters-long
+
+redis:
+  host:
+  port: 6380
+  password:
+
 livenessProbe:
-  path: /healthz
-  port: 3000
+  path: /auth/healthz
+  port: 3002
   initialDelaySeconds: 20
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
-# These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
 readinessProbe:
-  path: /healthy
-  port: 3000
+  path: /auth/healthy
+  port: 3002
   initialDelaySeconds: 30
   periodSeconds: 10
   failureThreshold: 3
