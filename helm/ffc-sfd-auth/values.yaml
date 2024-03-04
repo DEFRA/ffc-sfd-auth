@@ -18,8 +18,8 @@ container:
 
 ingress:
   class: nginx
-  endpoint: ffc-sfd
-  server: example.com
+  endpoint: ffc-auth
+  server: ffc-sfd-auth.{ENVIRONMENT}.adp.defra.gov.uk
   path: /auth
 
 containerConfigMap:
