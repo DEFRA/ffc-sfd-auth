@@ -2,6 +2,7 @@
 # You may create Queues, Topics, Subscriptions, Storage Accounts, Databases and Role Assignments on these here.
 namespaceQueues:
   - name: backend
+    owner: 'no'
     roleAssignments:
       - roleName: 'QueueReceiver'
 
