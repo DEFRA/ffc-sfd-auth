@@ -41,16 +41,21 @@ extends:
     serviceName: "ffc-sfd-auth"
     deployFromFeature: ${{ parameters.deployFromFeature }}
     appBuildConfig:
-      appFrameworkType: "nodejs"    
+      appFrameworkType: "nodejs"
       projectPath: "./package.json"
       manifestPath: "./package.json"
       imageRepoName: "ffc-sfd-auth"
     appTestConfig:
       testFilePath: "./docker-compose.test.yaml"
     appDeployConfig:
-      filepath: "./appConfig"  
+      filepath: "./appConfig"
       filetype: "yaml"
       variableGroups:
         - ffc-sfd-auth-<environment>
       variables:
         - ffc-sfd-auth-APPINSIGHTS-CONNECTIONSTRING
+        - ffc-sfd-auth-REDIS_PASSWORD
+        - ffc-sfd-auth-DEFRA_ID_CLIENT_ID
+        - ffc-sfd-auth-DEFRA_ID_CLIENT_SECRET
+        - ffc-sfd-auth-DEFRA_ID_SERVICE_ID
+        - ffc-sfd-auth-COOKIE_PASSWORD
