@@ -4,7 +4,7 @@
 - key: REDIS_HOST
   value: "SNDADPINFRD3401.redis.cache.windows.net"
 - key: REDIS_PASSWORD
-  value: "{{servicename}}-REDIS_PASSWORD"
+  value: "{{servicename}}-REDIS-PASSWORD"
   type: "keyvault"
 - key: GATEWAY_HOST
   value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk"
@@ -13,12 +13,12 @@
 - key: DEFRA_ID_WELL_KNOWN_URL
   value: "https://your-account.cpdev.cui.defra.gov.uk/idphub/b2c/b2c_1a_cui_cpdev_signupsigninsfi/.well-known/openid-configuration"
 - key: DEFRA_ID_CLIENT_ID
-  value: "{{servicename}}-DEFRA_ID_CLIENT_ID"
+  value: "{{servicename}}-DEFRA-ID-CLIENT-ID"
 - key: DEFRA_ID_CLIENT_SECRET
-  value: "{{servicename}}-DEFRA_ID_CLIENT_SECRET"
+  value: "{{servicename}}-DEFRA-ID-CLIENT-SECRET"
   type: "keyvault"
 - key: DEFRA_ID_SERVICE_ID
-  value: "{{servicename}}-DEFRA_ID_SERVICE_ID"
+  value: "{{servicename}}-DEFRA-ID-SERVICE-ID"
 - key: DEFRA_ID_POLICY
   value: "b2c_1a_cui_cpdev_signupsigninsfi"
 - key: DEFRA_ID_REDIRECT_URL
@@ -26,5 +26,5 @@
 - key: DEFRA_ID_POST_LOGOUT_REDIRECT_URL
   value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk/auth/sign-out-oidc"
 - key: COOKIE_PASSWORD
-  value: "{{servicename}}-COOKIE_PASSWORD"
+  value: "{{servicename}}-COOKIE-PASSWORD"
   type: "keyvault"

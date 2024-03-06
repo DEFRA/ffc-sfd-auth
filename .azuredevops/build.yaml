@@ -54,8 +54,8 @@ extends:
         - ffc-sfd-auth-<environment>
       variables:
         - ffc-sfd-auth-APPINSIGHTS-CONNECTIONSTRING
-        - ffc-sfd-auth-REDIS_PASSWORD
-        - ffc-sfd-auth-DEFRA_ID_CLIENT_ID
-        - ffc-sfd-auth-DEFRA_ID_CLIENT_SECRET
-        - ffc-sfd-auth-DEFRA_ID_SERVICE_ID
-        - ffc-sfd-auth-COOKIE_PASSWORD
+        - ffc-sfd-auth-REDIS-PASSWORD
+        - ffc-sfd-auth-DEFRA-ID-CLIENT-ID
+        - ffc-sfd-auth-DEFRA-ID-CLIENT-SECRET
+        - ffc-sfd-auth-DEFRA-ID-SERVICE-ID
+        - ffc-sfd-auth-COOKIE-PASSWORD
