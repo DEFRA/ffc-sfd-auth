@@ -19,7 +19,7 @@ container:
 ingress:
   class: nginx
   endpoint: ffc-auth
-  server: ffc-sfd-auth.{ENVIRONMENT}.adp.defra.gov.uk
+  server: environment.adp.defra.gov.uk
   path: /auth
 
 redis:
