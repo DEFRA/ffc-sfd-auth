@@ -16,17 +16,6 @@ container:
   memCpuTier: L
   port: 3002
 
-ingress:
-  class: nginx
-  endpoint: ffc-auth
-  server: environment.adp.defra.gov.uk
-  path: /auth
-
-redis:
-  host:
-  port: 6380
-  password:
-
 livenessProbe:
   path: /auth/healthz
   port: 3002
