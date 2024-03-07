@@ -34,7 +34,7 @@ readinessProbe:
 
 ingress:
   class: nginx
-  endpoint: ffc-landing-page
+  endpoint: ffc-sfd-landing-page
   server: environment.adp.defra.gov.uk
   path: /auth
   type: minion
