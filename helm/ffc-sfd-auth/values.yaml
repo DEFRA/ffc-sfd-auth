@@ -31,3 +31,10 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
+
+ingress:
+  class: nginx
+  endpoint: ffc-landing-page
+  server: environment.adp.defra.gov.uk
+  path: /auth
+  type: minion
