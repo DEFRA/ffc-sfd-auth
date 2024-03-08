@@ -24,9 +24,9 @@
 - key: DEFRA_ID_POLICY
   value: "b2c_1a_cui_cpdev_signupsigninsfi"
 - key: DEFRA_ID_REDIRECT_URL
-  value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk/auth/sign-in-oidc"
+  value: "https://ffc-sfd-landing-page.snd3.adp.defra.gov.uk/auth/sign-in-oidc"
 - key: DEFRA_ID_POST_LOGOUT_REDIRECT_URL
-  value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk/auth/sign-out-oidc"
+  value: "https://ffc-sfd-landing-page.snd3.adp.defra.gov.uk/auth/sign-out-oidc"
 - key: COOKIE_PASSWORD
   value: "{{servicename}}-COOKIE-PASSWORD"
   type: "keyvault"
