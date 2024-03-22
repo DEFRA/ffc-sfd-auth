@@ -13,6 +13,7 @@ module.exports = {
           }
 
           if (statusCode === 403) {
+            console.log(request.auth.credentials)
             return h.view('403').code(statusCode)
           }
 

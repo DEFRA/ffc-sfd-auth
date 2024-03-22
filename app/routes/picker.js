@@ -11,7 +11,6 @@ const { setSession } = require('../session')
 module.exports = [{
   method: GET,
   path: '/picker',
-  options: { auth: { strategy: 'jwt', scope: [SFD_VIEW] } },
   handler: async (request, h) => {
     const query = `query {
           personOrganisations {

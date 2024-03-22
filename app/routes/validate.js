@@ -13,6 +13,7 @@ module.exports = [{
     },
     validate: {
       payload: Joi.object({
+        request: Joi.object().optional(),
         token: Joi.object().required()
       }),
       failAction: (_request, _h, error) => {
@@ -20,7 +21,7 @@ module.exports = [{
       }
     },
     handler: (request, h) => {
-      const result = validateToken(request.payload.token, request)
+      const result = validateToken(request.payload.token, request.payload.request)
       return h.response(result)
     }
   }
