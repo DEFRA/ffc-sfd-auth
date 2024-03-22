@@ -6,7 +6,7 @@ const { ROLE, SCOPES } = require('../../constants/cache-keys')
 
 const setPermissions = async (request, organisationId) => {
   const personId = await getPersonId(request)
-  const permissions = await getPermissions(personId, organisationId)
+  const permissions = await getPermissions(request, organisationId, personId)
   const scopes = mapScopes(permissions.privileges)
   setSession(request, ROLE, permissions.role)
   setSession(request, SCOPES, scopes)
@@ -62,9 +62,9 @@ const getPersonId = async (request) => {
   return payload.data.person.id
 }
 
-const getPermissions = async (request) => {
+const getPermissions = async (request, organisationId, personId) => {
   const query = `query {
-          permissions {
+          permissions(organisationId: ${organisationId}, personId: ${personId}) {
             roles,
             permissions
           }
