@@ -2,15 +2,46 @@ const Wreck = require('@hapi/wreck')
 const { AUTH_COOKIE_NAME } = require('../../constants/cookies')
 const { serverConfig } = require('../../config')
 const { setSession } = require('../../session')
-const { PERMISSIONS, ROLES } = require('../../constants/cache-keys')
+const { ROLE, SCOPES } = require('../../constants/cache-keys')
 
 const setPermissions = async (request, organisationId) => {
   const personId = await getPersonId(request)
   const permissions = await getPermissions(personId, organisationId)
-  // map permissions to scopes
-  // save scopes to cache
-  setSession(request, ROLES, permissions.roles.join('|'))
-  setSession(request, PERMISSIONS, permissions.privileges.join('|'))
+  const scopes = mapScopes(permissions.privileges)
+  setSession(request, ROLE, permissions.role)
+  setSession(request, SCOPES, scopes)
+}
+
+const {
+  USER,
+  SFD_VIEW,
+  ORGANISATION_AMEND,
+  ORGANISATION_VIEW,
+  AHWP_SUBMIT,
+  AHWP_AMEND,
+  AHWP_VIEW
+} = require('../scopes')
+
+const {
+  BUSINESS_AMEND,
+  BPS_SUBMIT
+} = require('../privileges')
+
+const mapScopes = (privileges) => {
+  const scopes = [USER, SFD_VIEW]
+  if (privileges.includes(BUSINESS_AMEND)) {
+    scopes.push(ORGANISATION_AMEND)
+    scopes.push(ORGANISATION_VIEW)
+    scopes.push(AHWP_SUBMIT)
+    scopes.push(AHWP_AMEND)
+    scopes.push(AHWP_VIEW)
+  }
+  if (privileges.includes(BPS_SUBMIT)) {
+    scopes.push(AHWP_SUBMIT)
+    scopes.push(AHWP_AMEND)
+    scopes.push(AHWP_VIEW)
+  }
+  return [...new Set(scopes)]
 }
 
 const getPersonId = async (request) => {

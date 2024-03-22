@@ -1,18 +1,18 @@
 const Joi = require('joi')
 const Wreck = require('@hapi/wreck')
 const { GET, POST } = require('../constants/http-verbs')
-const { USER } = require('../auth/scopes')
+const { ORGANISATION_ID } = require('../constants/cache-keys')
+const { SFD_VIEW } = require('../auth/scopes')
 const { setPermissions } = require('../permissions')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { getRedirectPath } = require('../auth')
 const { serverConfig } = require('../config')
 const { setSession } = require('../session')
-const { ORGANISATION_ID } = require('../constants/cache-keys')
 
 module.exports = [{
   method: GET,
   path: '/picker',
-  options: { auth: { strategy: 'jwt', scope: [USER] } },
+  options: { auth: { strategy: 'jwt', scope: [SFD_VIEW] } },
   handler: async (request, h) => {
     const query = `query {
           personOrganisations {
@@ -52,6 +52,7 @@ module.exports = [{
   method: POST,
   path: '/picker',
   options: {
+    auth: { strategy: 'jwt', scope: [SFD_VIEW] },
     validate: {
       payload: Joi.object({
         organisationId: Joi.number().integer().required(),

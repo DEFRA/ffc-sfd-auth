@@ -10,7 +10,7 @@ module.exports = [{
   handler: async (request, h) => {
     const redirect = request.query.redirect ?? '/landing-page'
 
-    if (authConfig.defraIdEnabled) {
+    if (authConfig.defraIdEnabled && authConfig.defraIdSignOutEnabled) {
       clearSession(request)
       return h.redirect(await getSignOutUrl(request, redirect, request.state[AUTH_COOKIE_NAME]))
         .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)

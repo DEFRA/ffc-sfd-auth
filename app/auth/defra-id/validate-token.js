@@ -1,7 +1,17 @@
-const { getScopes } = require('./get-scopes')
+const { getScopes } = require('../get-scopes')
+const { getSession } = require('../session')
+const { ROLE } = require('../../constants/cache-keys')
 
-const validateToken = (decoded, _request, _h) => {
-  return { isValid: true, credentials: { scope: getScopes(decoded.roles), name: `${decoded.firstName} ${decoded.lastName}`, crn: decoded.contactId } }
+const validateToken = (decoded, request, _h) => {
+  return {
+    isValid: true,
+    credentials: {
+      role: getSession(request, ROLE),
+      scope: getScopes(request),
+      name: `${decoded.firstName} ${decoded.lastName}`,
+      crn: decoded.contactId
+    }
+  }
 }
 
 module.exports = {

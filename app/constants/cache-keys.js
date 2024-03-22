@@ -4,6 +4,6 @@ module.exports = {
   REFRESH_TOKEN: 'refresh-token',
   PERSON_ID: 'person-id',
   ORGANISATION_ID: 'organisation-id',
-  ROLES: 'roles',
-  PERMISSIONS: 'permissions'
+  ROLE: 'role',
+  SCOPES: 'scopes'
 }
