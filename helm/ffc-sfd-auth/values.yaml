@@ -6,29 +6,35 @@ image: ffc-sfd-auth
 
 # You may add further labels to identify the service or what your component does.
 labels:
-  component: backend
+  component: web
 
-# Here you can define your Priority classes, min/max replicables etc. Empty block does the HELM Library defaults.
+# Here you can define your Priority classes, min/max replicas etc. Empty block does the HELM Library defaults.
 deployment: {}
 
 # These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
 container:
   memCpuTier: L
+  port: 3002
 
-# These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
 livenessProbe:
-  path: /healthz
-  port: 3000
+  path: /auth/healthz
+  port: 3002
   initialDelaySeconds: 20
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
-# These may be changed. See here: https://github.com/DEFRA/adp-helm-library?tab=readme-ov-file#container-template
 readinessProbe:
-  path: /healthy
-  port: 3000
+  path: /auth/healthy
+  port: 3002
   initialDelaySeconds: 30
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
+
+ingress:
+  class: nginx
+  endpoint: ffc-sfd-landing-page
+  server: adp.defra.gov.uk
+  path: /auth
+  type: minion
