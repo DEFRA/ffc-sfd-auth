@@ -21,7 +21,8 @@ module.exports = [{
       }
     },
     handler: (request, h) => {
-      const result = validateToken(request.payload.token, request.payload.request)
+      // TODO: confirm if payload request is needed
+      const result = validateToken(request.payload.token, request)
       return h.response(result)
     }
   }
