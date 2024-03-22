@@ -1,5 +1,5 @@
 const exists = (request, key) => {
-  return request.yar.get(key) !== undefined
+  return request.yar.get(key) ?? false
 }
 
 module.exports = {

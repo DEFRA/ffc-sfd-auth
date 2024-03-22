@@ -38,7 +38,7 @@ module.exports = {
     setSession(request, REFRESH_TOKEN, refreshToken)
 
     if (!existsInSession(request, ORGANISATION_ID)) {
-      return h.redirect(`/picker?redirect=${redirect}`)
+      return h.redirect(`/auth/picker?redirect=${redirect}`)
         .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
     }
 
