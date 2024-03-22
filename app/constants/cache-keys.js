@@ -1,5 +1,9 @@
 module.exports = {
   STATE: 'state',
   INITIALISATION_VECTOR: 'initialisation-vector',
-  REFRESH_TOKEN: 'refresh-token'
+  REFRESH_TOKEN: 'refresh-token',
+  PERSON_ID: 'person-id',
+  ORGANISATION_ID: 'organisation-id',
+  ROLES: 'roles',
+  PERMISSIONS: 'permissions'
 }

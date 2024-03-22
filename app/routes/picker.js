@@ -1,11 +1,73 @@
-const { GET } = require('../constants/http-verbs')
-const { reselectOrganisation } = require('../auth/defra-id/reselect-organisation')
+const Joi = require('joi')
+const Wreck = require('@hapi/wreck')
+const { GET, POST } = require('../constants/http-verbs')
+const { USER } = require('../auth/scopes')
+const { setPermissions } = require('../permissions')
+const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { getRedirectPath } = require('../auth')
+const { serverConfig } = require('../config')
+const { setSession } = require('../session')
+const { ORGANISATION_ID } = require('../constants/cache-keys')
 
 module.exports = [{
   method: GET,
   path: '/picker',
+  options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
-    const redirect = request.query.redirect ?? '/landing-page/home'
-    return h.redirect(await reselectOrganisation(redirect))
+    const query = `query {
+          personOrganisations {
+            crn
+            organisation {
+              id
+              sbi
+              name
+            }
+          }
+        }`
+    const { payload } = await Wreck.post(serverConfig.dataHost, {
+      headers: {
+        crn: request.auth.credentials.crn,
+        Authorization: request.state[AUTH_COOKIE_NAME],
+        'Content-Type': 'application/json'
+      },
+      payload: JSON.stringify({ query }),
+      json: true
+    })
+
+    const redirect = getRedirectPath(request.query.redirect)
+
+    if (payload.data.customerBusinesses.length === 0) {
+      return h.view('no-organisations')
+    }
+
+    if (payload.data.customerBusinesses.length === 1) {
+      setSession(request, ORGANISATION_ID, request.payload.organisationId)
+      await setPermissions(request, request.payload.organisationId)
+      return h.redirect(redirect)
+    }
+
+    return h.view('picker', { redirect, organisations: payload.data.personOrganisations.organisations })
+  }
+}, {
+  method: POST,
+  path: '/picker',
+  options: {
+    validate: {
+      payload: Joi.object({
+        organisationId: Joi.number().integer().required(),
+        redirect: Joi.string().optional().allow('')
+      }),
+      failAction: async (request, h, _error) => {
+        return h.view('sign-in', {
+          message: 'Organisation must be selected',
+          redirect: request.payload.redirect
+        }).takeover()
+      }
+    }
+  },
+  handler: async (request, h) => {
+    setSession(request, ORGANISATION_ID, request.payload.organisationId)
+    await setPermissions(request, request.payload.organisationId)
+    return h.redirect(getRedirectPath(request.payload.redirect))
   }
 }]

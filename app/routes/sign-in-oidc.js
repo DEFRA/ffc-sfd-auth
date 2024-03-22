@@ -1,9 +1,10 @@
 const Joi = require('joi')
 const { authConfig } = require('../config')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { REFRESH_TOKEN, ORGANISATION_ID } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
-const { validateState, decodeState, validateInitialisationVector, clearCache, getAccessToken, getRedirectPath } = require('../auth')
-const { cacheRefreshToken } = require('../auth/cache-refresh-token')
+const { validateState, decodeState, validateInitialisationVector, getAccessToken, getRedirectPath } = require('../auth')
+const { clearSession, setSession, existsInSession } = require('../session')
 
 module.exports = {
   method: GET,
@@ -33,8 +34,14 @@ module.exports = {
     const { access_token: accessToken, redirect_token: refreshToken } = await getAccessToken(request.query.code)
     validateInitialisationVector(request, accessToken)
     const redirect = getRedirectPath(state.redirect)
-    clearCache(request)
-    cacheRefreshToken(request, refreshToken)
+    clearSession(request)
+    setSession(request, REFRESH_TOKEN, refreshToken)
+
+    if (!existsInSession(request, ORGANISATION_ID)) {
+      return h.redirect(`/picker?redirect=${redirect}`)
+        .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+    }
+
     return h.redirect(redirect)
       .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
   }

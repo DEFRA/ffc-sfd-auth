@@ -7,6 +7,7 @@ const schema = Joi.object().keys({
   serviceName: Joi.string().default('Single Front Door'),
   routePrefix: Joi.string().default('/auth'),
   gatewayHost: Joi.string().required(),
+  dataHost: Joi.string().required(),
   cookiePassword: Joi.string().required()
 })
 
@@ -16,6 +17,7 @@ const config = {
   serviceName: process.env.SERVICE_NAME,
   routePrefix: process.env.ROUTE_PREFIX,
   gatewayHost: process.env.GATEWAY_HOST,
+  dataHost: process.env.DATA_HOST,
   cookiePassword: process.env.COOKIE_PASSWORD
 }
 
