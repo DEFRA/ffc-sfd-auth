@@ -9,7 +9,9 @@ const validateToken = (decoded, request, _h) => {
       role: getSession(request, ROLE),
       scope: getScopes(request),
       name: 'Andrew Farmer',
-      crn: decoded.contactId
+      crn: decoded.contactId,
+      personId: 1,
+      organisationId: 1
     }
   }
 }

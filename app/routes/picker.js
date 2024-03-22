@@ -36,12 +36,12 @@ module.exports = [{
 
     const redirect = getRedirectPath(request.query.redirect)
 
-    if (payload.data.customerBusinesses.length === 0) {
+    if (payload.data.personOrganisations.length === 0) {
       return h.view('no-organisations')
     }
 
-    if (payload.data.customerBusinesses.length === 1) {
-      setSession(request, ORGANISATION_ID, request.payload.organisationId)
+    if (payload.data.personOrganisations.length === 1) {
+      setSession(request, ORGANISATION_ID, payload.data.personOrganisations[0].organisation.id)
       await setPermissions(request, request.payload.organisationId)
       return h.redirect(redirect)
     }

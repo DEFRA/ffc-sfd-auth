@@ -2,12 +2,13 @@ const Wreck = require('@hapi/wreck')
 const { AUTH_COOKIE_NAME } = require('../../constants/cookies')
 const { serverConfig } = require('../../config')
 const { setSession } = require('../../session')
-const { ROLE, SCOPES } = require('../../constants/cache-keys')
+const { ROLE, SCOPES, PERSON_ID } = require('../../constants/cache-keys')
 
 const setPermissions = async (request, organisationId) => {
   const personId = await getPersonId(request)
   const permissions = await getPermissions(request, organisationId, personId)
   const scopes = mapScopes(permissions.privileges)
+  setSession(request, PERSON_ID, personId)
   setSession(request, ROLE, permissions.role)
   setSession(request, SCOPES, scopes)
 }
