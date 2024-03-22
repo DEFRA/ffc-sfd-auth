@@ -1,5 +1,5 @@
 const { getScopes } = require('../get-scopes')
-const { getSession } = require('../session')
+const { getSession } = require('../../session')
 const { ROLE, ORGANISATION_ID, PERSON_ID } = require('../../constants/cache-keys')
 
 const validateToken = (decoded, request, _h) => {
