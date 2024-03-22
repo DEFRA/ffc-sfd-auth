@@ -8,15 +8,17 @@ module.exports = [{
   method: GET,
   path: '/sign-out-oidc',
   handler: async (request, h) => {
-    if (authConfig.defraIdEnabled) {
+    let redirect = '/landing-page'
+
+    if (authConfig.defraIdEnabled && authConfig.defraIdSignOutEnabled) {
       validateState(request, request.query.state)
+      const state = decodeState(request.query.state)
+      redirect = getRedirectPath(state.redirect)
     }
-    const state = decodeState(request.query.state)
-    const redirect = getRedirectPath(state.redirect)
 
     clearSession(request)
 
-    return h.view('sign-out', { redirect })
+    return h.view('sign-out', { redirect: request.query.redirect ?? redirect })
       .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
   }
 }]

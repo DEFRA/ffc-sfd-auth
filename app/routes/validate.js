@@ -20,7 +20,7 @@ module.exports = [{
       }
     },
     handler: (request, h) => {
-      const result = validateToken(request.payload.token)
+      const result = validateToken(request.payload.token, request)
       return h.response(result)
     }
   }
