@@ -66,8 +66,8 @@ const getPersonId = async (request) => {
 const getPermissions = async (request, organisationId, personId) => {
   const query = `query {
           permissions(organisationId: ${organisationId}, personId: ${personId}) {
-            roles,
-            permissions
+            role,
+            privileges
           }
         }`
   const { payload } = await Wreck.post(serverConfig.dataHost, {
@@ -79,7 +79,7 @@ const getPermissions = async (request, organisationId, personId) => {
     payload: JSON.stringify({ query }),
     json: true
   })
-  return payload.data
+  return payload.data.permissions
 }
 
 module.exports = {

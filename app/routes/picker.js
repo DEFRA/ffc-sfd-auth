@@ -2,7 +2,6 @@ const Joi = require('joi')
 const Wreck = require('@hapi/wreck')
 const { GET, POST } = require('../constants/http-verbs')
 const { ORGANISATION_ID } = require('../constants/cache-keys')
-const { SFD_VIEW } = require('../auth/scopes')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { getRedirectPath, setPermissions } = require('../auth')
 const { serverConfig } = require('../config')
@@ -15,7 +14,7 @@ module.exports = [{
     const query = `query {
           personOrganisations {
             crn
-            organisation {
+            organisations {
               id
               sbi
               name
@@ -50,7 +49,6 @@ module.exports = [{
   method: POST,
   path: '/picker',
   options: {
-    auth: { strategy: 'jwt', scope: [SFD_VIEW] },
     validate: {
       payload: Joi.object({
         organisationId: Joi.number().integer().required(),
