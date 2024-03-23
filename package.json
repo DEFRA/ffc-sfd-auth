@@ -25,6 +25,7 @@
     "@hapi/crumb": "9.0.1",
     "@hapi/hapi": "21.3.2",
     "@hapi/inert": "6.0.3",
+    "@hapi/iron": "7.0.1",
     "@hapi/vision": "7.0.2",
     "@hapi/wreck": "18.0.1",
     "@hapi/yar": "11.0.1",
