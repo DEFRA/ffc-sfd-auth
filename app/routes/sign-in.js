@@ -10,6 +10,10 @@ module.exports = [{
   handler: async (request, h) => {
     const redirect = request.query.redirect ?? '/landing-page/home'
 
+    if (request.query.invalidSession) {
+      return h.redirect(getRedirectPath(redirect)).unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
+    }
+
     if (request.auth.isAuthenticated) {
       return h.redirect(getRedirectPath(redirect))
     }
