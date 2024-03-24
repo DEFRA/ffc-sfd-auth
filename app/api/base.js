@@ -1,6 +1,6 @@
 const Wreck = require('@hapi/wreck')
-const { AUTH_COOKIE_NAME } = require('../../constants/cookies')
-const { serverConfig } = require('../../config')
+const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { serverConfig } = require('../config')
 
 const base = async (request, query) => {
   const { payload } = await Wreck.post(serverConfig.dataHost, {
