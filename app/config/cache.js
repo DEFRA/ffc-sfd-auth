@@ -8,7 +8,6 @@ const schema = Joi.object({
   password: Joi.string().allow(''),
   partition: Joi.string().default(SERVICE_NAME),
   cacheName: Joi.string().default(SERVICE_NAME),
-  segment: Joi.string().default(SERVICE_NAME),
   ttl: Joi.number().integer().default(1000 * 60 * 60 * 24) // 24 hours
 })
 
