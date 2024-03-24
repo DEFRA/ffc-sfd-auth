@@ -9,10 +9,6 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl">{{ auth.credentials.name }}</span>
-        Your organisations
-      </h1>
       <form method="POST" action="/auth/picker">
         <input type="hidden" name="crumb" value="{{crumb}}"/>
         <input type="hidden" name="redirect" value="{{redirect}}"/>
@@ -36,6 +32,7 @@
           <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">
+              <span class="govuk-caption-xl">{{ auth.credentials.name }}</span>
                 Choose organisation
               </h1>
             </legend>
