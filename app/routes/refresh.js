@@ -12,11 +12,13 @@ module.exports = {
     auth: false
   },
   handler: async (request, h) => {
+    console.log('Refreshing access token')
     const redirect = getRedirectPath(request.query.redirect)
     const refreshToken = getSession(request, REFRESH_TOKEN)
     if (refreshToken) {
       const { access_token: accessToken, refresh_token: newRefreshToken } = await refreshAccessToken(refreshToken)
       setSession(request, REFRESH_TOKEN, newRefreshToken)
+      console.log('Access token refreshed')
       return h.redirect(redirect)
         .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
     }

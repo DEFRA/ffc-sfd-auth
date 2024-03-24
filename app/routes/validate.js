@@ -24,7 +24,7 @@ module.exports = [{
     handler: async (request, h) => {
       if (request.payload.session) {
         await attachSession(request, request.payload.session)
-        const result = validateToken(request.payload.token, request)
+        const result = await validateToken(request.payload.token, request)
         return h.response(result)
       }
       return h.response({ isValid: false, errorMessage: 'Invalid session' })

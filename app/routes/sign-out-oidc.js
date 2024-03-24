@@ -2,7 +2,8 @@ const { GET } = require('../constants/http-verbs')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
 const { decodeState, getRedirectPath, validateState } = require('../auth')
-const { resetSession } = require('../session')
+const { resetSession, clearSession } = require('../session')
+const { STATE } = require('../constants/cache-keys')
 
 module.exports = [{
   method: GET,
@@ -14,6 +15,7 @@ module.exports = [{
       validateState(request, request.query.state)
       const state = decodeState(request.query.state)
       redirect = getRedirectPath(state.redirect)
+      clearSession(request, STATE)
     }
 
     resetSession(request)

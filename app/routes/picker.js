@@ -11,6 +11,7 @@ module.exports = [{
   method: GET,
   path: '/picker',
   handler: async (request, h) => {
+    console.log('credentials: ', request.auth.credentials)
     const query = `query {
           personOrganisations {
             crn

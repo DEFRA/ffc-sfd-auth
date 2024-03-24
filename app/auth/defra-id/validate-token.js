@@ -2,16 +2,21 @@ const { getScopes } = require('../get-scopes')
 const { getSession } = require('../../session')
 const { ROLE, ORGANISATION_ID, PERSON_ID } = require('../../constants/cache-keys')
 
-const validateToken = (decoded, request, _h) => {
+const validateToken = async (decoded, request, _h) => {
+  const role = getSession(request, ROLE)
+  const scope = getScopes(request)
+  const personId = getSession(request, PERSON_ID)
+  const organisationId = getSession(request, ORGANISATION_ID)
+
   return {
     isValid: true,
     credentials: {
-      role: getSession(request, ROLE),
-      scope: getScopes(request),
+      role,
+      scope,
       name: `${decoded.firstName} ${decoded.lastName}`,
       crn: decoded.contactId,
-      personId: getSession(request, PERSON_ID),
-      organisationId: getSession(request, ORGANISATION_ID)
+      personId,
+      organisationId
     }
   }
 }

@@ -3,11 +3,14 @@ const { getSession } = require('../../session')
 const { getScopes } = require('../get-scopes')
 
 const validateToken = (decoded, request, _h) => {
+  const role = getSession(request, ROLE)
+  const scope = getScopes(request)
+
   return {
     isValid: true,
     credentials: {
-      role: getSession(request, ROLE),
-      scope: getScopes(request),
+      role,
+      scope,
       name: 'Andrew Farmer',
       crn: decoded.contactId,
       personId: 1,
