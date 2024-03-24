@@ -1,30 +1,27 @@
-const { refreshAccessToken } = require('../auth')
-const { authConfig } = require('../config')
-const { REFRESH_TOKEN } = require('../constants/cache-keys')
+const { parseJwt } = require('../auth/defra-id/parse-jwt')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 
 module.exports = {
   plugin: {
     name: 'auth-refresh',
     register: (server, options) => {
-      server.ext('onPostAuth', async (request, h) => {
-        if (!authConfig.defraIdEnabled) {
+      server.ext('onPreAuth', async (request, h) => {
+        if (request.path.includes('/assets/')) {
           return h.continue
         }
 
-        if (request.path.startsWith('/assets/')) {
+        const token = request.state[AUTH_COOKIE_NAME]
+
+        if (!token) {
           return h.continue
         }
 
-        const currentToken = request.state[AUTH_COOKIE_NAME]
-        const refreshToken = request.yar.get(REFRESH_TOKEN)
+        const decoded = parseJwt(token)
 
-        if (!currentToken || !refreshToken) {
-          return h.continue
+        if (decoded.exp * 1000 - Date.now() <= 600 * 1000) {
+          return h.redirect(`/auth/refresh?redirect=${request.url.pathname}`).takeover()
         }
 
-        const response = await refreshAccessToken(refreshToken)
-        h.state(AUTH_COOKIE_NAME, response.access_token, authConfig.cookieOptions)
         return h.continue
       })
     }
