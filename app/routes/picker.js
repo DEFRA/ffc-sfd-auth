@@ -10,6 +10,11 @@ const { setSession } = require('../session')
 module.exports = [{
   method: GET,
   path: '/picker',
+  options: {
+    auth: {
+      mode: 'required'
+    }
+  },
   handler: async (request, h) => {
     console.log('credentials: ', request.auth.credentials)
     const query = `query {
