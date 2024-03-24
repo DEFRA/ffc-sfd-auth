@@ -5,8 +5,9 @@ module.exports = {
   plugin: {
     name: 'auth-refresh',
     register: (server, options) => {
-      server.ext('onPreAuth', async (request, h) => {
-        if (request.path.includes('/assets/')) {
+      server.ext('onPreAuth', (request, h) => {
+        // TODO: consider if more paths should be excluded
+        if (request.path.includes('/assets/') || request.path.includes('/auth/refresh')) {
           return h.continue
         }
 

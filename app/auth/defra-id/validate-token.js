@@ -3,6 +3,7 @@ const { getSession } = require('../../session')
 const { ROLE, ORGANISATION_ID, PERSON_ID } = require('../../constants/cache-keys')
 
 const validateToken = async (decoded, request, _h) => {
+  console.log(decoded)
   const role = getSession(request, ROLE)
   const scope = getScopes(request)
   const personId = getSession(request, PERSON_ID)
