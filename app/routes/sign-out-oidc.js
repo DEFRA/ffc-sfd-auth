@@ -2,6 +2,7 @@ const { GET } = require('../constants/http-verbs')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
 const { decodeState, getRedirectPath, validateState } = require('../auth')
+const { resetSession } = require('../session')
 
 module.exports = [{
   method: GET,
@@ -15,7 +16,7 @@ module.exports = [{
       redirect = getRedirectPath(state.redirect)
     }
 
-    request.yar.reset()
+    resetSession(request)
 
     return h.view('sign-out', { redirect: request.query.redirect ?? redirect })
       .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
