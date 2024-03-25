@@ -40,7 +40,14 @@ module.exports = {
     setSession(request, REFRESH_TOKEN, refreshToken)
     setSession(request, IS_VALID, true)
 
-    if (!existsInSession(request, ORGANISATION_ID)) {
+    const existingOrganisationId = existsInSession(request, ORGANISATION_ID)
+
+    if (state.organisationId && state.organisationId !== existingOrganisationId) {
+      return h.redirect(`/auth/picker/external?redirect=${redirect}&organisationId=${state.organisationId}`)
+        .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+    }
+
+    if (!existingOrganisationId) {
       return h.redirect(`/auth/picker?redirect=${redirect}`)
         .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
     }

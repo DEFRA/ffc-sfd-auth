@@ -1,5 +1,6 @@
 const Joi = require('joi')
 const Wreck = require('@hapi/wreck')
+const { Boom } = require('@hapi/boom')
 const { GET, POST } = require('../constants/http-verbs')
 const { ORGANISATION_ID } = require('../constants/cache-keys')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
@@ -51,6 +52,7 @@ module.exports = [{
   method: POST,
   path: '/picker',
   options: {
+    auth: { strategy: 'jwt' },
     validate: {
       payload: Joi.object({
         organisationId: Joi.number().integer().required(),
@@ -65,8 +67,38 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    setSession(request, ORGANISATION_ID, request.payload.organisationId)
     await setPermissions(request, request.payload.organisationId)
+    setSession(request, ORGANISATION_ID, request.payload.organisationId)
     return h.redirect(getRedirectPath(request.payload.redirect))
+  }
+}, {
+  method: GET,
+  path: '/picker/external',
+  options: {
+    validate: {
+      query: Joi.object({
+        organisationId: Joi.number().integer().required(),
+        redirect: Joi.string().optional().allow('')
+      }),
+      failAction: async (request, h, _error) => {
+        return Boom.badRequest('Organisation must be selected')
+      }
+    }
+  },
+  handler: async (request, h) => {
+    const redirect = getRedirectPath(request.query.redirect)
+
+    if (!request.auth.isAuthenticated) {
+      return h.redirect(`/auth/sign-in?redirect=${redirect}&organisationId=${request.query.organisationId}`)
+    }
+
+    try {
+      await setPermissions(request, request.query.organisationId)
+      setSession(request, ORGANISATION_ID, request.query.organisationId)
+      return h.redirect(getRedirectPath(redirect))
+    } catch (error) {
+      console.log(error)
+      return h.redirect(`/auth/picker?redirect=${redirect}`)
+    }
   }
 }]
