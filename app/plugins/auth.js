@@ -13,7 +13,8 @@ module.exports = {
         cookieKey: AUTH_COOKIE_NAME,
         validate: validateToken,
         verifyOptions: {
-          algorithms: [RS256]
+          algorithms: [RS256],
+          ignoreExpiration: true
         }
       })
       server.auth.default({ strategy: 'jwt', mode: 'try' })

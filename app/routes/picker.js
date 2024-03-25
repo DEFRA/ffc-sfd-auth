@@ -10,11 +10,7 @@ const { setSession } = require('../session')
 module.exports = [{
   method: GET,
   path: '/picker',
-  options: {
-    auth: {
-      mode: 'required'
-    }
-  },
+  options: { auth: { strategy: 'jwt' } },
   handler: async (request, h) => {
     console.log('credentials: ', request.auth.credentials)
     const query = `query {
