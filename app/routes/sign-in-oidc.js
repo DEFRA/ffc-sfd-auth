@@ -10,6 +10,7 @@ module.exports = {
   method: GET,
   path: '/sign-in-oidc',
   options: {
+    auth: false,
     plugins: {
       crumb: false
     },
