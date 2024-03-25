@@ -1,5 +1,7 @@
 const get = (request, key) => {
-  return request.yar.get(key)
+  if (request.yar._store) {
+    return request.yar.get(key)
+  }
 }
 
 module.exports = {
