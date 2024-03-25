@@ -1,12 +1,16 @@
-const { parseJwt } = require('../auth/defra-id/parse-jwt')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { parseJwt } = require('../auth/defra-id/parse-jwt')
+const { authConfig } = require('../config')
 
 module.exports = {
   plugin: {
     name: 'auth-refresh',
     register: (server, options) => {
       server.ext('onPreAuth', (request, h) => {
-        // TODO: consider if more paths should be excluded
+        if (!authConfig.refreshTokens) {
+          return h.continue
+        }
+
         if (request.path.includes('/assets/') || request.path.includes('/auth/refresh')) {
           return h.continue
         }
