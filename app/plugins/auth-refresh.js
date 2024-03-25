@@ -11,7 +11,7 @@ module.exports = {
           return h.continue
         }
 
-        if (request.path.includes('/assets/') || request.path.includes('/auth/refresh')) {
+        if (request.path.includes('/assets/') || request.path.includes('/refresh') || request.path.includes('/sign-out') || request.path.includes('/health')) {
           return h.continue
         }
 
