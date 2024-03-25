@@ -9,7 +9,10 @@ module.exports = {
           const statusCode = response.output.statusCode
 
           if (statusCode === 401) {
-            return h.redirect('/auth/sign-in').code(statusCode)
+            if (request.response.message === 'Invalid session') {
+              return h.redirect('/auth/sign-in?invalidSession=true')
+            }
+            return h.redirect('/auth/sign-in')
           }
 
           if (statusCode === 403) {

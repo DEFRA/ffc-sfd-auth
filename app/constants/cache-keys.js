@@ -1,4 +1,5 @@
 module.exports = {
+  IS_VALID: 'is-valid',
   STATE: 'state',
   INITIALISATION_VECTOR: 'initialisation-vector',
   REFRESH_TOKEN: 'refresh-token',
