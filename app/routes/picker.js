@@ -41,8 +41,8 @@ module.exports = [{
     }
 
     if (payload.data.personOrganisations.length === 1) {
-      setSession(request, ORGANISATION_ID, payload.data.personOrganisations[0].organisation.id)
       await setPermissions(request, request.payload.organisationId)
+      setSession(request, ORGANISATION_ID, payload.data.personOrganisations[0].organisation.id)
       return h.redirect(redirect)
     }
 
