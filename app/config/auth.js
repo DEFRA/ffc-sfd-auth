@@ -3,11 +3,13 @@ const { PRODUCTION } = require('../constants/environments')
 
 const schema = Joi.object().keys({
   defraIdEnabled: Joi.bool().default(false),
+  defraIdSignOutEnabled: Joi.bool().default(false),
   wellKnownUrl: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().uri().required(), otherwise: Joi.string().allow('') }),
   clientId: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   clientSecret: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   serviceId: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   policy: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
+  refreshTokens: Joi.boolean().default(false),
   redirectUrl: Joi.string().default('http://localhost:3000/auth/sign-in-oidc'),
   postLogoutRedirectUrl: Joi.string().default('http://localhost:3000/auth/sign-out-oidc'),
   devAuthPrivateKey: Joi.string().optional().allow(''),
@@ -29,6 +31,7 @@ const schema = Joi.object().keys({
 
 const config = {
   defraIdEnabled: process.env.DEFRA_ID_ENABLED,
+  defraIdSignOutEnabled: process.env.DEFRA_ID_SIGN_OUT_ENABLED,
   wellKnownUrl: process.env.DEFRA_ID_WELL_KNOWN_URL,
   clientId: process.env.DEFRA_ID_CLIENT_ID,
   clientSecret: process.env.DEFRA_ID_CLIENT_SECRET,
@@ -36,6 +39,7 @@ const config = {
   redirectUrl: process.env.DEFRA_ID_REDIRECT_URL,
   postLogoutRedirectUrl: process.env.DEFRA_ID_POST_LOGOUT_REDIRECT_URL,
   policy: process.env.DEFRA_ID_POLICY,
+  refreshTokens: process.env.DEFRA_ID_REFRESH_TOKENS,
   devAuthPrivateKey: process.env.DEV_AUTH_PRIVATE_KEY,
   devAuthPublicKey: process.env.DEV_AUTH_PUBLIC_KEY,
   jwtConfig: {

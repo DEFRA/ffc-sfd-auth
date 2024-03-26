@@ -8,7 +8,6 @@ const schema = Joi.object({
   password: Joi.string().allow(''),
   partition: Joi.string().default(SERVICE_NAME),
   cacheName: Joi.string().default(SERVICE_NAME),
-  segment: Joi.string().default(SERVICE_NAME),
   ttl: Joi.number().integer().default(1000 * 60 * 60 * 24) // 24 hours
 })
 
@@ -18,7 +17,6 @@ const config = {
   password: process.env.REDIS_PASSWORD,
   partition: process.env.REDIS_PARTITION,
   cacheName: process.env.REDIS_CACHE_NAME,
-  segment: process.env.REDIS_TOKEN_SEGMENT,
   ttl: process.env.REDIS_TTL
 }
 

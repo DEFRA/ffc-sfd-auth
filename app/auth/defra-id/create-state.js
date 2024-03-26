@@ -4,7 +4,8 @@ const { STATE } = require('../../constants/cache-keys')
 const createState = (request, redirect) => {
   const state = Buffer.from(JSON.stringify({
     id: uuidv4(),
-    redirect
+    redirect,
+    organisationId: request.query?.organisationId
   })).toString('base64')
 
   request.yar.set(STATE, state)

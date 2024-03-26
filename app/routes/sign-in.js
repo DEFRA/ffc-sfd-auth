@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_COOKIE_NAME, SESSION_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
 const { getAccessToken, getAuthorizationUrl, getRedirectPath } = require('../auth')
 
@@ -9,6 +9,12 @@ module.exports = [{
   path: '/sign-in',
   handler: async (request, h) => {
     const redirect = request.query.redirect ?? '/landing-page/home'
+
+    if (request.query.invalidSession) {
+      return h.redirect(getRedirectPath(redirect))
+        .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
+        .unstate(SESSION_COOKIE_NAME, authConfig.cookieOptions)
+    }
 
     if (request.auth.isAuthenticated) {
       return h.redirect(getRedirectPath(redirect))

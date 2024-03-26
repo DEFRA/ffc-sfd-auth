@@ -10,7 +10,7 @@ module.exports = {
     cache: {
       cache: cacheConfig.cacheName,
       expiresIn: cacheConfig.ttl,
-      segment: cacheConfig.segment
+      segment: 'session'
     },
     cookieOptions: {
       ...authConfig.cookieOptions,
