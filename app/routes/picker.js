@@ -13,7 +13,6 @@ module.exports = [{
   path: '/picker',
   options: { auth: { strategy: 'jwt' } },
   handler: async (request, h) => {
-    console.log('credentials: ', request.auth.credentials)
     const query = `query {
           personOrganisations {
             crn

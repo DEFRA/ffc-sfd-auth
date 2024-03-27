@@ -6,5 +6,7 @@ module.exports = {
   PERSON_ID: 'person-id',
   ORGANISATION_ID: 'organisation-id',
   ROLE: 'role',
-  SCOPES: 'scopes'
+  SCOPES: 'scopes',
+  PUBLIC_KEY: 'public-key',
+  WELL_KNOWN: 'well-known'
 }
