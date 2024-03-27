@@ -2,27 +2,30 @@ const Hapi = require('@hapi/hapi')
 const Joi = require('joi')
 const { serverConfig, cacheConfig } = require('./config')
 
+const server = Hapi.server({
+  port: serverConfig.port,
+  routes: {
+    validate: {
+      options: {
+        abortEarly: false
+      }
+    }
+  },
+  router: {
+    stripTrailingSlash: true
+  },
+  cache: [{
+    name: cacheConfig.cacheName,
+    provider: {
+      constructor: cacheConfig.catbox,
+      options: cacheConfig.catboxOptions
+    }
+  }]
+})
+
 const createServer = async () => {
-  const server = Hapi.server({
-    port: serverConfig.port,
-    routes: {
-      validate: {
-        options: {
-          abortEarly: false
-        }
-      }
-    },
-    router: {
-      stripTrailingSlash: true
-    },
-    cache: [{
-      name: cacheConfig.cacheName,
-      provider: {
-        constructor: cacheConfig.catbox,
-        options: cacheConfig.catboxOptions
-      }
-    }]
-  })
+  const cache = server.cache({ cache: cacheConfig.cacheName, segment: 'auth', expiresIn: cacheConfig.ttl })
+  server.app.cache = cache
 
   server.validator(Joi)
   await server.register(require('@hapi/inert'))
@@ -43,4 +46,4 @@ const createServer = async () => {
   return server
 }
 
-module.exports = { createServer }
+module.exports = { createServer, server }
