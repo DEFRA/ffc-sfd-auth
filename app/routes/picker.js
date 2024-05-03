@@ -77,6 +77,36 @@ module.exports = [{
   }
 }, {
   method: GET,
+  path: '/picker/defra-id',
+  options: {
+    validate: {
+      query: Joi.object({
+        organisationId: Joi.number().integer().required(),
+        redirect: Joi.string().optional().allow('')
+      }),
+      failAction: async (request, h, _error) => {
+        return Boom.badRequest('Organisation must be selected')
+      }
+    }
+  },
+  handler: async (request, h) => {
+    const redirect = getRedirectPath(request.query.redirect)
+
+    if (!request.auth.isAuthenticated) {
+      return h.redirect(`/auth/sign-in?redirect=${redirect}&organisationId=${request.query.organisationId}`)
+    }
+
+    try {
+      await setPermissions(request, request.query.organisationId)
+      setSession(request, ORGANISATION_ID, request.query.organisationId)
+      return h.redirect(getRedirectPath(redirect))
+    } catch (error) {
+      console.log(error)
+      return h.redirect(`/auth/picker?redirect=${redirect}`)
+    }
+  }
+}, {
+  method: GET,
   path: '/picker/external',
   options: {
     validate: {
@@ -100,15 +130,6 @@ module.exports = [{
 
     if (request.query.organisationId !== existingOrganisationId) {
       return h.redirect(await getAuthorizationUrl(request, { redirect, organisationId: request.query.organisationId }))
-    }
-
-    try {
-      await setPermissions(request, request.query.organisationId)
-      setSession(request, ORGANISATION_ID, request.query.organisationId)
-      return h.redirect(getRedirectPath(redirect))
-    } catch (error) {
-      console.log(error)
-      return h.redirect(`/auth/picker?redirect=${redirect}`)
     }
   }
 }]
