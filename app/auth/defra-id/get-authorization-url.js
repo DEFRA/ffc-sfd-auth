@@ -3,10 +3,10 @@ const { createState } = require('./create-state')
 const { createInitialisationVector } = require('./create-initialisation-vector')
 const { getWellKnown } = require('./get-well-known')
 
-const getAuthorizationUrl = async (request, redirect) => {
+const getAuthorizationUrl = async (request, options) => {
   const { authorization_endpoint: url } = await getWellKnown()
 
-  const state = createState(request, redirect)
+  const state = createState(request, options.redirect)
   const initialisationVector = createInitialisationVector(request)
 
   const query = [
@@ -19,8 +19,17 @@ const getAuthorizationUrl = async (request, redirect) => {
     `scope=openid offline_access ${authConfig.clientId}`,
     'response_type=code',
     'response_mode=query'
-  ].join('&')
-  return encodeURI(`${url}?${query}`)
+  ]
+
+  if (options.forceReselection) {
+    query.push('forceReselection=true')
+  }
+
+  if (options.organisationId) {
+    query.push(`relationshipId=${options.organisationId}`)
+  }
+
+  return encodeURI(`${url}?${query.join('&')}`)
 }
 
 module.exports = {

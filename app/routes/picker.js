@@ -4,15 +4,22 @@ const { Boom } = require('@hapi/boom')
 const { GET, POST } = require('../constants/http-verbs')
 const { ORGANISATION_ID } = require('../constants/cache-keys')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
-const { getRedirectPath, setPermissions } = require('../auth')
+const { getRedirectPath, setPermissions, getAuthorizationUrl } = require('../auth')
 const { serverConfig } = require('../config')
-const { setSession } = require('../session')
+const { setSession, existsInSession } = require('../session')
+const { authConfig } = require('../config')
 
 module.exports = [{
   method: GET,
   path: '/picker',
   options: { auth: { strategy: 'jwt' } },
   handler: async (request, h) => {
+    const redirect = getRedirectPath(request.query.redirect)
+
+    if (authConfig.defraIdEnabled) {
+      return h.redirect(await getAuthorizationUrl(request, { redirect, forceReselection: true }))
+    }
+
     const query = `query {
           personOrganisations {
             crn
@@ -32,8 +39,6 @@ module.exports = [{
       payload: JSON.stringify({ query }),
       json: true
     })
-
-    const redirect = getRedirectPath(request.query.redirect)
 
     if (payload.data.personOrganisations.length === 0) {
       return h.view('no-organisations')
@@ -89,6 +94,12 @@ module.exports = [{
 
     if (!request.auth.isAuthenticated) {
       return h.redirect(`/auth/sign-in?redirect=${redirect}&organisationId=${request.query.organisationId}`)
+    }
+
+    const existingOrganisationId = existsInSession(request, ORGANISATION_ID)
+
+    if (request.query.organisationId !== existingOrganisationId) {
+      return h.redirect(await getAuthorizationUrl(request, { redirect, organisationId: request.query.organisationId }))
     }
 
     try {
