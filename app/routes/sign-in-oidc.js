@@ -12,9 +12,6 @@ module.exports = {
   path: '/sign-in-oidc',
   options: {
     auth: false,
-    plugins: {
-      crumb: false
-    },
     validate: {
       query: Joi.object({
         code: Joi.string().required(),

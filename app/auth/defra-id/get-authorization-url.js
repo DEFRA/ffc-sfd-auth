@@ -29,6 +29,8 @@ const getAuthorizationUrl = async (request, options) => {
     query.push(`relationshipId=${options.organisationId}`)
   }
 
+  console.log(encodeURI(`${url}?${query.join('&')}`))
+
   return encodeURI(`${url}?${query.join('&')}`)
 }
 
