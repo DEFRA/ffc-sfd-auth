@@ -131,5 +131,7 @@ module.exports = [{
     if (request.query.organisationId !== existingOrganisationId) {
       return h.redirect(await getAuthorizationUrl(request, { redirect, organisationId: request.query.organisationId }))
     }
+
+    return h.redirect(redirect)
   }
 }]
