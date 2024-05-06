@@ -1,5 +1,5 @@
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
-const { parseJwt } = require('../auth/defra-id/parse-jwt')
+const { parseJwt } = require('../auth')
 const { authConfig } = require('../config')
 
 module.exports = {

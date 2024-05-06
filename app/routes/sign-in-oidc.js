@@ -3,9 +3,8 @@ const { authConfig } = require('../config')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { REFRESH_TOKEN, INITIALISATION_VECTOR, STATE, IS_VALID } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
-const { validateState, decodeState, validateInitialisationVector, getAccessToken, getRedirectPath } = require('../auth')
+const { validateState, decodeState, validateInitialisationVector, getAccessToken, getRedirectPath, parseJwt } = require('../auth')
 const { clearSession, setSession } = require('../session')
-const { parseJwt } = require('../auth/defra-id/parse-jwt')
 
 module.exports = {
   method: GET,

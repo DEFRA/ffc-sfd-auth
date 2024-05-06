@@ -1,5 +1,5 @@
 const { INITIALISATION_VECTOR } = require('../../constants/cache-keys')
-const { parseJwt } = require('./parse-jwt')
+const { parseJwt } = require('../parse-jwt')
 
 const validateInitialisationVector = (request, accessToken) => {
   const cachedInitialisationVector = request.yar.get(INITIALISATION_VECTOR)
