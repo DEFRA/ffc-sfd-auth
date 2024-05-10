@@ -9,7 +9,7 @@ const schema = Joi.object().keys({
   clientSecret: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   serviceId: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   policy: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
-  refreshTokens: Joi.boolean().default(false),
+  refreshTokens: Joi.boolean().default(true),
   redirectUrl: Joi.string().default('http://localhost:3000/auth/sign-in-oidc'),
   postLogoutRedirectUrl: Joi.string().default('http://localhost:3000/auth/sign-out-oidc'),
   devAuthPrivateKey: Joi.string().optional().allow(''),
