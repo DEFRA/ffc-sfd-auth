@@ -18,7 +18,7 @@ const schema = Joi.object().keys({
     expiryInMinutes: Joi.number().default(60)
   }),
   cookieOptions: Joi.object({
-    ttl: Joi.number().default(1000 * 60 * 60 * 24), // 24 hours
+    ttl: Joi.number().default(null),
     encoding: Joi.string().default('none'),
     isSameSite: Joi.string().valid('Lax').default('Lax'),
     isSecure: Joi.bool().default(true),
