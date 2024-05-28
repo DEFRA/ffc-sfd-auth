@@ -40,6 +40,6 @@ module.exports = {
     const organisationId = parseJwt(accessToken).currentRelationshipId
 
     return h.redirect(`/auth/picker/defra-id?redirect=${redirect}&organisationId=${organisationId}`)
-     .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+      .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
   }
 }
