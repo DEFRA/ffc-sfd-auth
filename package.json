@@ -25,6 +25,7 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
+    "@azure/msal-node": "2.9.1",
     "@hapi/boom": "10.0.1",
     "@hapi/catbox-redis": "6.0.2",
     "@hapi/crumb": "9.0.1",
