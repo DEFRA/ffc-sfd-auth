@@ -1,0 +1,21 @@
+const { getAccessToken } = require('./get-access-token')
+const { getAuthorizationUrl } = require('./get-authorization-url')
+const { getKeys } = require('./get-keys')
+const { getSignOutUrl } = require('./get-sign-out-url')
+const { refreshAccessToken } = require('./refresh-access-token')
+const { setPermissions } = require('./set-permissions')
+const { validateInitialisationVector } = require('./validate-initialisation-vector')
+const { validateState } = require('./validate-state')
+const { validateToken } = require('./validate-token')
+
+module.exports = {
+  getAccessToken,
+  getAuthorizationUrl,
+  getKeys,
+  getSignOutUrl,
+  refreshAccessToken,
+  setPermissions,
+  validateInitialisationVector,
+  validateState,
+  validateToken
+}

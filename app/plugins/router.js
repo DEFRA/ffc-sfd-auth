@@ -6,6 +6,7 @@ const routes = [].concat(
   require('../routes/sign-out'),
   require('../routes/sign-in-oidc'),
   require('../routes/sign-out-oidc'),
+  require('../routes/sign-in-ad'),
   require('../routes/public-key'),
   require('../routes/validate'),
   require('../routes/refresh'),

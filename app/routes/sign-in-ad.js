@@ -3,20 +3,22 @@ const { authConfig } = require('../config')
 const { AUTH_COOKIE_NAME } = require('../constants/cookies')
 const { REFRESH_TOKEN, INITIALISATION_VECTOR, STATE, IS_VALID } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
-const { validateState, decodeState, validateInitialisationVector, getAccessToken, getRedirectPath, parseJwt } = require('../auth')
+const { getRedirectPath, parseJwt, activeDirectory } = require('../auth')
+const { validateState, decodeState, validateInitialisationVector, getAccessToken } = activeDirectory
 const { clearSession, setSession } = require('../session')
 
 module.exports = {
   method: GET,
-  path: '/sign-in-oidc',
+  path: '/sign-in-ad',
   options: {
+    auth: { mode: 'try' },
     validate: {
       query: Joi.object({
-        code: Joi.string().required(),
-        state: Joi.string().required()
+        state: Joi.string().required(),
+        code: Joi.string().required()
       }).options({ stripUnknown: true }),
       failAction (request, h, err) {
-        console.log(`Defra ID login failed: ${err}`)
+        console.log(`Active Directory login failed: ${err}`)
         return h.view('500').takeover()
       }
     }
@@ -38,7 +40,7 @@ module.exports = {
 
     const organisationId = parseJwt(accessToken).currentRelationshipId
 
-    return h.redirect(`/auth/picker/defra-id?redirect=${redirect}&organisationId=${organisationId}`)
+    return h.redirect(`/auth/picker/active-directory?redirect=${redirect}&organisationId=${organisationId}`)
       .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
   }
 }

@@ -1,6 +1,6 @@
 const { authConfig } = require('../../config')
-const { createState } = require('../create-state')
-const { createInitialisationVector } = require('../create-initialisation-vector')
+const { createState } = require('./create-state')
+const { createInitialisationVector } = require('./create-initialisation-vector')
 const { getWellKnown } = require('./get-well-known')
 
 const getAuthorizationUrl = async (request, options) => {

@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid')
-const { STATE } = require('../../constants/cache-keys')
+const { STATE } = require('../constants/cache-keys')
 
 const createState = (request, redirect) => {
   const state = Buffer.from(JSON.stringify({
