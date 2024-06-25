@@ -1,11 +1,11 @@
 const Joi = require('joi')
 const { authConfig } = require('../config')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
-const { REFRESH_TOKEN, INITIALISATION_VECTOR, STATE, IS_VALID } = require('../constants/cache-keys')
+const { AUTH_INTERNAL_COOKIE_NAME } = require('../constants/cookies')
+const { INITIALISATION_VECTOR, STATE, IS_VALID, REFRESH_TOKEN } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
-const { getRedirectPath, parseJwt, activeDirectory } = require('../auth')
-const { validateState, decodeState, validateInitialisationVector, getAccessToken } = activeDirectory
-const { clearSession, setSession } = require('../session')
+const { getRedirectPath, activeDirectory } = require('../auth')
+const { decodeState, getAccessToken } = activeDirectory
+const { clearSession, setSession, getSession } = require('../session')
 
 module.exports = {
   method: GET,
@@ -14,6 +14,7 @@ module.exports = {
     auth: { mode: 'try' },
     validate: {
       query: Joi.object({
+        nonce: Joi.string().required(),
         state: Joi.string().required(),
         code: Joi.string().required()
       }).options({ stripUnknown: true }),
@@ -28,19 +29,20 @@ module.exports = {
       return h.redirect(getRedirectPath())
     }
 
-    validateState(request, request.query.state)
+    const sessionState = getSession(request, STATE)
+    const sessionInitialisationVector = getSession(request, INITIALISATION_VECTOR)
+    const { accessToken, refreshToken } = await getAccessToken(request.query, sessionState, sessionInitialisationVector)
     const state = decodeState(request.query.state)
-    const { access_token: accessToken, refresh_token: refreshToken } = await getAccessToken(request.query.code)
-    validateInitialisationVector(request, accessToken)
     const redirect = getRedirectPath(state.redirect)
     clearSession(request, INITIALISATION_VECTOR)
     clearSession(request, STATE)
     setSession(request, REFRESH_TOKEN, refreshToken)
     setSession(request, IS_VALID, true)
 
-    const organisationId = parseJwt(accessToken).currentRelationshipId
+    // return h.redirect(`/auth/picker/active-directory?redirect=${redirect}`)
+    //   .state(AUTH_INTERNAL_COOKIE_NAME, accessToken, authConfig.cookieOptions)
 
-    return h.redirect(`/auth/picker/active-directory?redirect=${redirect}&organisationId=${organisationId}`)
-      .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+    return h.redirect('/auth/test')
+      .state(AUTH_INTERNAL_COOKIE_NAME, accessToken, authConfig.cookieOptions)
   }
 }

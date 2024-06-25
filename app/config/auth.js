@@ -12,6 +12,13 @@ const schema = Joi.object().keys({
   refreshTokens: Joi.boolean().default(true),
   redirectUrl: Joi.string().default('http://localhost:3000/auth/sign-in-oidc'),
   postLogoutRedirectUrl: Joi.string().default('http://localhost:3000/auth/sign-out-oidc'),
+  adEnabled: Joi.bool().default(true),
+  activeDirectory: Joi.object({
+    tenantId: Joi.alternatives().conditional('adEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
+    clientId: Joi.alternatives().conditional('adEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
+    clientSecret: Joi.alternatives().conditional('adEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
+    redirectUrl: Joi.string().default('http://localhost:3000/auth/sign-in-ad')
+  }),
   devAuthPrivateKey: Joi.string().optional().allow(''),
   devAuthPublicKey: Joi.string().optional().allow(''),
   jwtConfig: Joi.object({
@@ -40,6 +47,13 @@ const config = {
   postLogoutRedirectUrl: process.env.DEFRA_ID_POST_LOGOUT_REDIRECT_URL,
   policy: process.env.DEFRA_ID_POLICY,
   refreshTokens: process.env.DEFRA_ID_REFRESH_TOKENS,
+  adEnabled: process.env.AD_ENABLED,
+  activeDirectory: {
+    tenantId: process.env.AD_TENANT_ID,
+    clientId: process.env.AD_CLIENT_ID,
+    clientSecret: process.env.AD_CLIENT_SECRET,
+    redirectUrl: process.env.AD_REDIRECT_URL
+  },
   devAuthPrivateKey: process.env.DEV_AUTH_PRIVATE_KEY,
   devAuthPublicKey: process.env.DEV_AUTH_PUBLIC_KEY,
   jwtConfig: {

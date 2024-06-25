@@ -10,7 +10,8 @@ const routes = [].concat(
   require('../routes/public-key'),
   require('../routes/validate'),
   require('../routes/refresh'),
-  require('../routes/picker')
+  require('../routes/picker'),
+  require('../routes/test')
 )
 
 module.exports = {

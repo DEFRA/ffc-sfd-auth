@@ -1,4 +1,4 @@
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { parseJwt } = require('../auth')
 const { authConfig } = require('../config')
 
@@ -15,7 +15,7 @@ module.exports = {
           return h.continue
         }
 
-        const token = request.state[AUTH_COOKIE_NAME]
+        const token = request.state[AUTH_EXTERNAL_COOKIE_NAME]
 
         if (!token) {
           return h.continue
@@ -26,6 +26,8 @@ module.exports = {
         if (decoded.exp * 1000 - Date.now() <= 600 * 1000) {
           return h.redirect(`/auth/refresh?redirect=${request.url.pathname}`).takeover()
         }
+
+        // TODO: need to refresh internal auth on each request
 
         return h.continue
       })

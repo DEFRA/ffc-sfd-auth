@@ -1,5 +1,5 @@
 const { authConfig } = require('../../config')
-const { createState } = require('./create-state')
+const { createState } = require('../create-state')
 const { getWellKnown } = require('./get-well-known')
 
 const getSignOutUrl = async (request, redirect, token) => {

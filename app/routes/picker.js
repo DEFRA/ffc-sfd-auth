@@ -3,16 +3,17 @@ const Wreck = require('@hapi/wreck')
 const { Boom } = require('@hapi/boom')
 const { GET, POST } = require('../constants/http-verbs')
 const { ORGANISATION_ID } = require('../constants/cache-keys')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { getRedirectPath, setPermissions, getAuthorizationUrl } = require('../auth')
 const { serverConfig } = require('../config')
 const { setSession, existsInSession } = require('../session')
 const { authConfig } = require('../config')
+const { EXTERNAL } = require('../constants/strategies')
 
 module.exports = [{
   method: GET,
   path: '/picker',
-  options: { auth: { strategy: 'jwt' } },
+  options: { auth: { strategy: EXTERNAL } },
   handler: async (request, h) => {
     const redirect = getRedirectPath(request.query.redirect)
 
@@ -33,7 +34,7 @@ module.exports = [{
     const { payload } = await Wreck.post(serverConfig.dataHost, {
       headers: {
         crn: request.auth.credentials.crn,
-        Authorization: request.state[AUTH_COOKIE_NAME],
+        Authorization: request.state[AUTH_EXTERNAL_COOKIE_NAME],
         'Content-Type': 'application/json'
       },
       payload: JSON.stringify({ query }),
@@ -56,7 +57,7 @@ module.exports = [{
   method: POST,
   path: '/picker',
   options: {
-    auth: { strategy: 'jwt' },
+    auth: { strategy: EXTERNAL },
     validate: {
       payload: Joi.object({
         organisationId: Joi.number().integer().required(),

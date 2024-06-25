@@ -1,35 +1,22 @@
+const { getClient } = require('./get-client')
 const { authConfig } = require('../../config')
-const { createState } = require('./create-state')
-const { createInitialisationVector } = require('./create-initialisation-vector')
-const { getWellKnown } = require('./get-well-known')
+const { createState } = require('../create-state')
+const { createInitialisationVector } = require('../create-initialisation-vector')
 
 const getAuthorizationUrl = async (request, options) => {
-  const { authorization_endpoint: url } = await getWellKnown()
+  const client = getClient()
 
   const state = createState(request, options.redirect)
   const initialisationVector = createInitialisationVector(request)
 
-  const query = [
-    `p=${authConfig.policy}`,
-    `client_id=${authConfig.clientId}`,
-    `serviceId=${authConfig.serviceId}`,
-    `state=${state}`,
-    `nonce=${initialisationVector}`,
-    `redirect_uri=${authConfig.redirectUrl}`,
-    `scope=openid offline_access ${authConfig.clientId}`,
-    'response_type=code',
-    'response_mode=query'
-  ]
-
-  if (options.forceReselection) {
-    query.push('forceReselection=true')
+  const parameters = {
+    prompt: 'select_account',
+    redirectUri: authConfig.activeDirectory.redirectUrl,
+    state,
+    nonce: initialisationVector
   }
 
-  if (options.organisationId) {
-    query.push(`relationshipId=${options.organisationId}`)
-  }
-
-  return encodeURI(`${url}?${query.join('&')}`)
+  return client.getAuthCodeUrl(parameters)
 }
 
 module.exports = {

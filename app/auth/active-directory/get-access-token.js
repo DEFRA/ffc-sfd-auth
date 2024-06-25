@@ -1,27 +1,18 @@
-const Wreck = require('@hapi/wreck')
+const { getClient } = require('./get-client')
 const { authConfig } = require('../../config')
-const { getWellKnown } = require('./get-well-known')
 
-const getAccessToken = async (code) => {
-  const { token_endpoint: url } = await getWellKnown()
+const getAccessToken = async (tokenRequest, state, initialisationVector) => {
+  const client = getClient()
 
-  const query = [
-    `client_id=${authConfig.clientId}`,
-    `client_secret=${authConfig.clientSecret}`,
-    'grant_type=authorization_code',
-    `scope=openid offline_access ${authConfig.clientId}`,
-    `code=${code}`,
-    `redirect_uri=${authConfig.redirectUrl}`
-  ].join('&')
-
-  const { payload } = await Wreck.post(`${url}?${query}`, {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    json: true
+  return client.acquireTokenByCode({
+    code: tokenRequest.code,
+    state: tokenRequest.state,
+    redirectUri: authConfig.redirectUrl
+  }, {
+    code: tokenRequest.code,
+    state,
+    nonce: initialisationVector
   })
-
-  return payload
 }
 
 module.exports = {
