@@ -1,8 +1,9 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
-const { AUTH_COOKIE_NAME, SESSION_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME, AUTH_INTERNAL_COOKIE_NAME, SESSION_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
-const { getAccessToken, getAuthorizationUrl, getRedirectPath } = require('../auth')
+const { getAccessToken, getAuthorizationUrl, getRedirectPath, activeDirectory } = require('../auth')
+const { getAuthorizationUrl: getActiveDirectoryAuthorizationUrl } = activeDirectory
 
 module.exports = [{
   method: GET,
@@ -12,7 +13,7 @@ module.exports = [{
 
     if (request.query.invalidSession) {
       return h.redirect(getRedirectPath(redirect))
-        .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
+        .unstate(AUTH_EXTERNAL_COOKIE_NAME, authConfig.cookieOptions)
         .unstate(SESSION_COOKIE_NAME, authConfig.cookieOptions)
     }
 
@@ -22,6 +23,29 @@ module.exports = [{
 
     if (authConfig.defraIdEnabled) {
       return h.redirect(await getAuthorizationUrl(request, { redirect, organisationId: request.query.organisationId }))
+    }
+
+    return h.view('sign-in', { redirect })
+  }
+},
+{
+  method: GET,
+  path: '/sign-in/internal',
+  handler: async (request, h) => {
+    const redirect = request.query.redirect ?? '/landing-page/home'
+
+    if (request.query.invalidSession) {
+      return h.redirect(getRedirectPath(redirect))
+        .unstate(AUTH_INTERNAL_COOKIE_NAME, authConfig.cookieOptions)
+        .unstate(SESSION_COOKIE_NAME, authConfig.cookieOptions)
+    }
+
+    if (request.auth.isAuthenticated) {
+      return h.redirect(getRedirectPath(redirect))
+    }
+
+    if (authConfig.adEnabled) {
+      return h.redirect(await getActiveDirectoryAuthorizationUrl(request, { redirect }))
     }
 
     return h.view('sign-in', { redirect })
@@ -53,6 +77,6 @@ module.exports = [{
     }
     const token = await getAccessToken(request.payload.crn, request.payload.password)
     return h.redirect(getRedirectPath(redirect))
-      .state(AUTH_COOKIE_NAME, token, authConfig.cookieOptions)
+      .state(AUTH_EXTERNAL_COOKIE_NAME, token, authConfig.cookieOptions)
   }
 }]

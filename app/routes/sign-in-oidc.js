@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { authConfig } = require('../config')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { REFRESH_TOKEN, INITIALISATION_VECTOR, STATE, IS_VALID } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
 const { validateState, decodeState, validateInitialisationVector, getAccessToken, getRedirectPath, parseJwt } = require('../auth')
@@ -10,7 +10,6 @@ module.exports = {
   method: GET,
   path: '/sign-in-oidc',
   options: {
-    auth: false,
     validate: {
       query: Joi.object({
         code: Joi.string().required(),
@@ -40,6 +39,6 @@ module.exports = {
     const organisationId = parseJwt(accessToken).currentRelationshipId
 
     return h.redirect(`/auth/picker/defra-id?redirect=${redirect}&organisationId=${organisationId}`)
-      .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+      .state(AUTH_EXTERNAL_COOKIE_NAME, accessToken, authConfig.cookieOptions)
   }
 }

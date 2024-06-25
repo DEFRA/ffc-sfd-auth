@@ -2,7 +2,7 @@ const { GET } = require('../constants/http-verbs')
 const { REFRESH_TOKEN } = require('../constants/cache-keys')
 const { refreshAccessToken, getRedirectPath } = require('../auth')
 const { getSession, setSession, resetSession } = require('../session')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
 
 module.exports = {
@@ -19,12 +19,12 @@ module.exports = {
       const { access_token: accessToken, refresh_token: newRefreshToken } = await refreshAccessToken(refreshToken)
       setSession(request, REFRESH_TOKEN, newRefreshToken)
       return h.redirect(redirect)
-        .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
+        .state(AUTH_EXTERNAL_COOKIE_NAME, accessToken, authConfig.cookieOptions)
     }
 
     resetSession(request)
 
     return h.redirect(`/sign-in?redirect=${redirect}`)
-      .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
+      .unstate(AUTH_EXTERNAL_COOKIE_NAME, authConfig.cookieOptions)
   }
 }

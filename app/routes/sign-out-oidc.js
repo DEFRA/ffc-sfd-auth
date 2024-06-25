@@ -1,5 +1,5 @@
 const { GET } = require('../constants/http-verbs')
-const { AUTH_COOKIE_NAME } = require('../constants/cookies')
+const { AUTH_EXTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { authConfig } = require('../config')
 const { decodeState, getRedirectPath, validateState } = require('../auth')
 const { resetSession, clearSession } = require('../session')
@@ -21,6 +21,6 @@ module.exports = [{
     resetSession(request)
 
     return h.view('sign-out', { redirect: request.query.redirect ?? redirect })
-      .unstate(AUTH_COOKIE_NAME, authConfig.cookieOptions)
+      .unstate(AUTH_EXTERNAL_COOKIE_NAME, authConfig.cookieOptions)
   }
 }]
