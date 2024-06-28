@@ -2,7 +2,7 @@
   value: "{{servicename}}-APPINSIGHTS-CONNECTIONSTRING"
   type: "keyvault"
 - key: REDIS_HOST
-  value: "SNDADPINFRD3401.redis.cache.windows.net"
+  value: "SNDADPINFRD4401.redis.cache.windows.net"
 - key: REDIS_PASSWORD
   value: "{{servicename}}-REDIS-PASSWORD"
   type: "keyvault"
