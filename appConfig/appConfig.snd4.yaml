@@ -2,12 +2,12 @@
   value: "{{servicename}}-APPINSIGHTS-CONNECTIONSTRING"
   type: "keyvault"
 - key: REDIS_HOST
-  value: "SNDADPINFRD3401.redis.cache.windows.net"
+  value: "SNDADPINFRD4401.redis.cache.windows.net"
 - key: REDIS_PASSWORD
   value: "{{servicename}}-REDIS-PASSWORD"
   type: "keyvault"
 - key: GATEWAY_HOST
-  value: "https://ffc-sfd-auth.snd3.adp.defra.gov.uk"
+  value: "https://ffc-sfd-auth.snd4.adp.defra.gov.uk"
 - key: DEFRA_ID_ENABLED
   value: "true"
 - key: DEFRA_ID_SIGN_OUT_ENABLED
@@ -26,9 +26,9 @@
 - key: DEFRA_ID_POLICY
   value: "b2c_1a_cui_cpdev_signupsigninsfi"
 - key: DEFRA_ID_REDIRECT_URL
-  value: "https://ffc-sfd.snd3.adp.defra.gov.uk/auth/sign-in-oidc"
+  value: "https://ffc-sfd.snd4.adp.defra.gov.uk/auth/sign-in-oidc"
 - key: DEFRA_ID_POST_LOGOUT_REDIRECT_URL
-  value: "https://ffc-sfd.snd3.adp.defra.gov.uk/auth/sign-out-oidc"
+  value: "https://ffc-sfd.snd4.adp.defra.gov.uk/auth/sign-out-oidc"
 - key: COOKIE_PASSWORD
   value: "{{servicename}}-COOKIE-PASSWORD"
   type: "keyvault"
