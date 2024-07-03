@@ -7,3 +7,4 @@ helm/**/*.lock
 dist
 _layout.njk
 .ssl
+.DS_Store
