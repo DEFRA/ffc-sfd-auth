@@ -7,4 +7,4 @@
 - key: REDIS_PORT
   value: "6380"
 - key: DATA_HOST
-  value: "http://ffc-sfd-data.ffc-sfd/graphql"
+  value: "http://ffc-sfd-data.fcp-sfd/graphql"
