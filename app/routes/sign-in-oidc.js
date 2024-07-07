@@ -10,7 +10,6 @@ module.exports = {
   method: GET,
   path: '/sign-in-oidc',
   options: {
-    auth: false,
     validate: {
       query: Joi.object({
         code: Joi.string().required(),
