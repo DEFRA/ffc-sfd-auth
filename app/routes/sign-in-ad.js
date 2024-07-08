@@ -3,8 +3,8 @@ const { authConfig } = require('../config')
 const { AUTH_INTERNAL_COOKIE_NAME } = require('../constants/cookies')
 const { INITIALISATION_VECTOR, STATE, IS_VALID, REFRESH_TOKEN } = require('../constants/cache-keys')
 const { GET } = require('../constants/http-verbs')
-const { getRedirectPath, activeDirectory } = require('../auth')
-const { decodeState, getAccessToken } = activeDirectory
+const { getRedirectPath, activeDirectory, decodeState } = require('../auth')
+const { getAccessToken } = activeDirectory
 const { clearSession, setSession, getSession } = require('../session')
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
     auth: { mode: 'try' },
     validate: {
       query: Joi.object({
-        nonce: Joi.string().required(),
+        // nonce: Joi.string().required(),
         state: Joi.string().required(),
         code: Joi.string().required()
       }).options({ stripUnknown: true }),

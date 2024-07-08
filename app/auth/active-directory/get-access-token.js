@@ -7,11 +7,11 @@ const getAccessToken = async (tokenRequest, state, initialisationVector) => {
   return client.acquireTokenByCode({
     code: tokenRequest.code,
     state: tokenRequest.state,
-    redirectUri: authConfig.redirectUrl
+    redirectUri: authConfig.activeDirectory.redirectUrl
   }, {
     code: tokenRequest.code,
-    state,
-    nonce: initialisationVector
+    state
+    // nonce: initialisationVector
   })
 }
 
