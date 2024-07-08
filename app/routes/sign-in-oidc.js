@@ -17,7 +17,7 @@ module.exports = [{
       }).options({ stripUnknown: true }),
       failAction (request, h, err) {
         console.log(`Login failed: ${err}`)
-        return h.redirect('/sign-in-oidc/invalid').takeover()
+        return h.redirect('/auth/sign-in-oidc/invalid').takeover()
       }
     }
   },
@@ -30,7 +30,7 @@ module.exports = [{
       validateState(request, request.query.state)
     } catch (error) {
       console.log(`Login failed: ${error}`)
-      return h.redirect('/sign-in-oidc/invalid')
+      return h.redirect('/auth/sign-in-oidc/invalid')
     }
 
     const { access_token: accessToken, refresh_token: refreshToken } = await getAccessToken(request.query.code)
@@ -39,7 +39,7 @@ module.exports = [{
       validateInitialisationVector(request, accessToken)
     } catch (error) {
       console.log(`Login failed: ${error}`)
-      return h.redirect('/sign-in-oidc/invalid')
+      return h.redirect('/auth/sign-in-oidc/invalid')
     }
 
     const state = decodeState(request.query.state)
