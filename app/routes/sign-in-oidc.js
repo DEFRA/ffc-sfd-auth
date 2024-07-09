@@ -26,20 +26,15 @@ module.exports = [{
       return h.redirect(getRedirectPath())
     }
 
+    const { access_token: accessToken, refresh_token: refreshToken } = await getAccessToken(request.query.code)
+    const organisationId = parseJwt(accessToken).currentRelationshipId
+
     try {
       validateState(request, request.query.state)
-    } catch (error) {
-      console.log(`Login failed: ${error}`)
-      return h.redirect('/auth/sign-in-oidc/invalid')
-    }
-
-    const { access_token: accessToken, refresh_token: refreshToken } = await getAccessToken(request.query.code)
-
-    try {
       validateInitialisationVector(request, accessToken)
     } catch (error) {
       console.log(`Login failed: ${error}`)
-      return h.redirect('/auth/sign-in-oidc/invalid')
+      return h.redirect(`/auth/sign-in-oidc/invalid?organisationId=${organisationId}`)
     }
 
     const state = decodeState(request.query.state)
@@ -48,8 +43,6 @@ module.exports = [{
     clearSession(request, STATE)
     setSession(request, REFRESH_TOKEN, refreshToken)
     setSession(request, IS_VALID, true)
-
-    const organisationId = parseJwt(accessToken).currentRelationshipId
 
     return h.redirect(`/auth/picker/defra-id?redirect=${redirect}&organisationId=${organisationId}`)
       .state(AUTH_COOKIE_NAME, accessToken, authConfig.cookieOptions)
@@ -62,6 +55,6 @@ module.exports = [{
     clearSession(request, STATE)
     clearSession(request, REFRESH_TOKEN)
     clearSession(request, IS_VALID)
-    return h.view('sign-in-invalid')
+    return h.view('sign-in-invalid', { organisationId: request.query.organisationId })
   }
 }]
